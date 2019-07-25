@@ -1,0 +1,54 @@
+worked:-
+======
+Optional.ofNullable(products).orElse(Collections.emptyList())
+    .stream()
+    .filter(Objects::nonNull)
+    .forEach(
+        e -> {
+          System.out.println(
+                                        Optional.ofNullable(e)
+                                        .map(Product::getManufacturer)
+                                        .map(Manufacturer::getName)
+                                        .orElse(null));
+       });
+
+Didnt Work:-
+==========
+Optional.ofNullable(products).orElse(Collections.emptyList())
+                      .stream()
+                      .filter(Objects::nonNull)
+                      .map(Product::getManufacturer)
+                      .map(Manufacturer::getName)
+                      .filter(Objects::nonNull)
+                      .forEach(p->System.out.println(p));
+
+
+ProductAsyncServiceImpl.java line number 400 check with what it is replaced.
+
+Try the same in your project:-
+=============================
+
+Optional.ofNullable(getSimDetailsResponse.getNetworkResource().getResourceStatus())
+                    .orElseGet(Collections::emptyList)
+                    .stream()
+                    .filter(resourceStatus -> null != resourceStatus.getStatusCode())
+                    .findFirst().ifPresent(resourceStatus -> simResponse.setSimStatus(resourceStatus.getStatusCode().value()));
+
+                    will it yeild null if getStatusCode will be null??
+
+
+
+                    String authorizationIdValue = Optional.ofNullable(confirmOrderCheckoutRequestPayload.getPaymentMethod())
+                                        .map(PaymentMethodCommonFields::getManualAuthId).orElse(null);
+
+                                if (StringUtils.isNotEmpty(authorizationIdValue)) {
+                                    specificationGroup = new SpecificationGroup();
+                                    specificationValue = new SpecificationValue();
+                                    specificationValue.setValue(authorizationIdValue);
+                                    specificationValue.setName(AUTHORIZATION_ID);
+                                    specificationGroup.getSpecificationValue()
+                                            .add(specificationValue);
+                                    specificationGroupList.add(specificationGroup);
+
+
+                                    what does it set in the specificationValue.setValue if the authorizationIdValue is returned as optional why didnt we use .get on the optional returning value??
